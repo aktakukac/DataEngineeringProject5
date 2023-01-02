@@ -159,12 +159,23 @@ load_time_dimension_table = LoadDimensionOperator(
 )
 
 # Run data quality checks
+
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     dag=dag, 
     provide_context=True,
     redshift_conn_id='redshift',
-    tables = ["songplays", "artists", "songs", "time","users"]
+    tables = ["songplays", "artists", "songs", "time","users"],
+    checks = [
+        {'test_sql': "SELECT COUNT(*) FROM songs WHERE songid is null", 
+        'expected_result': 0, 
+        'comparison': 'eq'},
+        {'test_sql': "SELECT COUNT(*) FROM artists WHERE artistid is null", 
+        'expected_result': 0, 
+        'comparison': 'eq'},
+        {'test_sql': "SELECT COUNT(*) FROM songs", 
+        'expected_result': 0, 
+        'comparison': 'gt'}]
 )
 
 # End dummy operator
