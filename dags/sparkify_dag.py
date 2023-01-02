@@ -51,7 +51,7 @@ dag_name='sparkify_dag'
 dag = DAG(dag_name,
         default_args = default_args,
         description = 'Load and transform data in Redshift with Airflow',
-        schedule_interval = '@monthly' # schedule_interval='@hourly'
+        schedule_interval = '@hourly' # schedule_interval='@hourly'
 )
 
 
